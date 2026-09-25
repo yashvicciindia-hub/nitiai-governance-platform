@@ -1,0 +1,1 @@
+export const policyPage = { id: "policy", path: "/policy", label: "Policy & Ethics" } as const;

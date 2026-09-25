@@ -1,0 +1,1 @@
+export const aboutPage = { id: "about", path: "/about", label: "About" } as const;

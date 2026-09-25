@@ -1,0 +1,1 @@
+export const solutionsPage = { id: "solutions", path: "/solutions", label: "AI Solutions" } as const;

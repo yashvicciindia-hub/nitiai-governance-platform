@@ -1,0 +1,1 @@
+export const homePage = { id: "home", path: "/", label: "Home" } as const;
