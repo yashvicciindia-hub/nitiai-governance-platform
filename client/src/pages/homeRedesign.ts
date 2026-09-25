@@ -1,0 +1,64 @@
+const images = [
+  "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=1600&q=84",
+  "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1000&q=82",
+  "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1000&q=82",
+  "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1000&q=82",
+  "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1000&q=82",
+  "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=1000&q=82",
+  "https://images.unsplash.com/photo-1531058020387-3be344556be6?auto=format&fit=crop&w=1000&q=82",
+];
+
+const ecosystem = [
+  ["POLICY", "Policy establishes frameworks through which public institutions address complex social and economic challenges."],
+  ["DATA", "Data can support analysis and service delivery while raising important questions about quality, privacy, and governance."],
+  ["INSTITUTIONS", "Institutions translate ideas, rules, and public priorities into systems people can access and trust."],
+  ["CITIZENS", "People bring lived experience, expectations, and accountability to every public system."],
+  ["PUBLIC SERVICES", "Services are where governance becomes tangible in everyday life."],
+  ["TECHNOLOGY", "Technology can extend institutional capacity when its limits remain visible."],
+  ["ACCOUNTABILITY", "Accountability keeps decisions explainable, reviewable, and connected to people."],
+] as const;
+
+export const landscape = [
+  ["AGRICULTURE", "Technology, land, and public resources.", images[2]],
+  ["HEALTHCARE", "Systems designed around access and care.", images[3]],
+  ["EDUCATION", "Learning, opportunity, and public investment.", images[4]],
+  ["PUBLIC SAFETY", "Information, coordination, and human judgment.", images[1]],
+  ["URBAN GOVERNANCE", "Infrastructure that shapes everyday movement.", images[5]],
+  ["ENVIRONMENT", "Stewardship informed by evidence and context.", images[6]],
+  ["CITIZEN SERVICES", "The point where institutions meet people.", images[0]],
+] as const;
+
+const process = [
+  ["DATA", "Information enters with context, provenance, and limits."],
+  ["AI", "AI can help process large volumes of information and identify patterns."],
+  ["ANALYSIS", "Analysis turns inputs into questions and reviewable possibilities."],
+  ["HUMAN REVIEW", "People remain responsible for interpretation, context, and consequential decisions."],
+  ["PUBLIC OUTCOME", "Technology should support more informed and accessible public systems."],
+] as const;
+
+const themes = ["POLICY", "PUBLIC SERVICES", "DATA", "PUBLIC SAFETY", "DIGITAL INFRASTRUCTURE", "RESPONSIBLE AI"];
+const principles = [
+  ["PRIVACY", "Sensitive information requires appropriate safeguards and purposeful handling."],
+  ["TRANSPARENCY", "The use, limits, and uncertainty of AI-supported systems should be understandable."],
+  ["FAIRNESS", "Systems should be evaluated for uneven effects, errors, and barriers to access."],
+  ["HUMAN OVERSIGHT", "People remain responsible for interpretation and accountable decisions."],
+  ["SECURITY", "Public systems need proportionate protection across data, access, and operations."],
+  ["AUDITABILITY", "Evidence of inputs, outputs, and review should remain traceable."],
+] as const;
+
+export function homeRedesignMarkup() {
+  return `<section class="home-redesign home-only" data-home-section id="home-redesign">
+    <section class="home-hero"><div class="container home-hero-grid"><div class="home-hero-copy"><div class="home-label">NITIAI / AI IN GOVERNANCE</div><h1>Governance<br/><span>simplified</span><br/>through AI</h1><p class="home-hero-lede">Exploring how artificial intelligence can help us understand policy, public systems, and the future of governance.</p><p class="home-hero-body">NITIAI is an interactive platform exploring the relationship between artificial intelligence and governance - from public-sector applications and policy understanding to responsible AI and public safety.</p><div class="home-hero-actions"><button class="btn btn-primary" data-home-scroll="home-platform">Explore NITIAI <span>-></span></button><button class="btn btn-secondary" data-home-scroll="home-explore">About the platform <span>-></span></button></div><div class="home-hero-meta"><span>AI / GOVERNANCE / PEOPLE</span><span>BRIEF 09.24</span></div></div><div class="home-hero-media" data-home-parallax><img src="${images[0]}" alt="Governance team reviewing public systems"/><div class="home-media-overlay"></div><div class="home-media-lines"><i></i><i></i><i></i></div><div class="home-media-label home-media-label-policy">POLICY</div><div class="home-media-label home-media-label-data">DATA</div><div class="home-media-label home-media-label-ai">AI</div><div class="home-media-label home-media-label-people">PEOPLE</div><div class="home-media-caption"><span>FIELD NOTE / 01</span><strong>Public systems are made of people, decisions, and information.</strong></div></div></div></section>
+    <section class="home-section home-platform" id="home-platform"><div class="container"><div class="home-section-label">01 / THE PLATFORM</div><div class="home-split"><h2>Understanding governance<br/><em>in an age of AI.</em></h2><div class="home-split-copy"><p class="home-statement">AI is changing how information is processed, how public systems operate, and how people interact with institutions.</p><span class="home-growing-line"></span><p>NITIAI brings together perspectives on AI and governance through interactive experiences covering public-sector applications, policy, responsible AI, and emerging areas such as public safety.</p></div></div></div></section>
+    <section class="home-section home-ecosystem"><div class="container"><div class="home-section-label">02 / GOVERNANCE ECOSYSTEM</div><div class="home-section-heading"><h2>Governance is a system<br/><em>of connected decisions.</em></h2><p>Explore the relationships that shape how public systems work. Select a node to bring its role into focus.</p></div><div class="home-ecosystem-layout"><div class="home-network" id="homeNetwork"><svg viewBox="0 0 620 470" aria-hidden="true"><path d="M310 235L125 78M310 235L493 79M310 235L72 236M310 235L548 239M310 235L145 401M310 235L476 402M310 235L310 64"/><path d="M125 78L493 79M72 236L548 239M145 401L476 402" class="home-network-secondary"/></svg><button class="home-network-center">GOVERNANCE</button>${ecosystem.map(([title], index) => `<button class="home-network-node home-network-node-${index}" data-home-ecosystem="${index}">${title}</button>`).join("")}</div><aside class="home-ecosystem-detail" id="homeEcosystemDetail"><span>SELECTED SYSTEM / POLICY</span><h3>${ecosystem[0][0]}</h3><p>${ecosystem[0][1]}</p></aside></div></div></section>
+    <section class="home-section home-landscape"><div class="container"><div class="home-section-label">03 / GOVERNMENT LANDSCAPE</div><div class="home-section-heading"><h2>Where governance<br/><em>meets everyday life.</em></h2><p>Public systems become real in the places, services, and infrastructures people rely on every day.</p></div><div class="home-landscape-rail">${landscape.map(([title, copy, image], index) => `<button class="home-landscape-item ${index === 0 ? "active" : ""}" data-home-landscape="${index}"><img src="${image}" alt="${title.toLowerCase()} editorial view" loading="lazy" data-home-landscape-image="${index}"/><span class="home-landscape-shade"></span><div><small>0${index + 1}</small><strong>${title}</strong><p>${copy}</p><i>-></i></div></button>`).join("")}</div></div></section>
+    <section class="home-section home-process"><div class="container"><div class="home-section-label">04 / AI + GOVERNANCE</div><div class="home-section-heading"><h2>From information<br/><em>to insight.</em></h2><p>A responsible process keeps the movement from data to public outcome visible.</p></div><div class="home-process-track" id="homeProcessTrack">${process.map(([title, copy], index) => `<button class="home-process-step ${index === 0 ? "active" : ""}" data-home-process="${index}"><span>0${index + 1}</span><strong>${title}</strong><i>${index < process.length - 1 ? "->" : ""}</i><small>${copy}</small></button>`).join("")}</div><div class="home-process-detail" id="homeProcessDetail"><span>ACTIVE STAGE / DATA</span><p>${process[0][1]}</p></div></div></section>
+    <section class="home-section home-visual"><div class="container"><div class="home-section-label">05 / GOVERNANCE LANDSCAPE</div><div class="home-visual-grid"><div><h2>A changing<br/><em>landscape.</em></h2><p>These themes are connected areas of exploration, not official statistics. Hover a theme to see its place in the wider system.</p><span class="home-illustrative">ILLUSTRATIVE VISUALIZATION</span></div><div class="home-theme-field" id="homeThemeField">${themes.map((theme, index) => `<button class="home-theme home-theme-${index}" data-home-theme="${index}"><i></i>${theme}</button>`).join("")}<div class="home-theme-core">NITIAI<br/><small>AI + GOVERNANCE</small></div></div></div></div></section>
+    <section class="home-oversight"><div class="container"><div class="home-section-label">06 / HUMAN OVERSIGHT</div><h2>AI can accelerate information.<br/><span>People remain responsible for decisions.</span></h2><div class="home-oversight-sequence">${["DATA", "AI ASSISTANCE", "INSIGHT", "HUMAN REVIEW", "ACCOUNTABLE ACTION"].map((item, index) => `<div class="home-oversight-step"><strong>${item}</strong><i>${index < 4 ? "↓" : ""}</i></div>`).join("")}</div></div></section>
+  </section><!--GOVERNANCE-IN-MOTION-->
+  <section class="home-section home-responsible home-only" data-home-section><div class="container"><div class="home-section-label">07 / RESPONSIBLE AI</div><div class="home-section-heading"><h2>Innovation needs<br/><em>accountability.</em></h2><p>Responsible technology is a practice of making assumptions, limitations, and review visible.</p></div><div class="home-principles">${principles.map(([title, copy], index) => `<article class="home-principle ${index === 0 ? "open" : ""}"><button data-home-principle="${index}"><span>0${index + 1}</span><strong>${title}</strong><i>+</i></button><p>${copy}</p></article>`).join("")}</div></div></section>
+  <section class="home-section home-explore home-only" data-home-section id="home-explore"><div class="container"><div class="home-section-label">NITIAI / AREAS OF EXPLORATION</div><div class="home-section-heading"><h2>Explore the NITIAI<br/><em>platform.</em></h2></div><div class="home-explore-grid"><a href="/policy" class="home-explore-card"><img src="${images[1]}" alt="AI and governance discussion" loading="lazy"/><span>AI &amp; GOVERNANCE</span><p>Explore the relationship between AI, policy, and public systems.</p><i>-></i></a><a href="/solutions" class="home-explore-card"><img src="${images[2]}" alt="Government AI operations" loading="lazy"/><span>GOVERNMENT AI</span><p>Explore how AI can support different public-sector domains.</p><i>-></i></a><a href="/ai-in-police" class="home-explore-card"><img src="${images[3]}" alt="Public safety professionals" loading="lazy"/><span>AI IN POLICE &amp; PUBLIC SAFETY</span><p>Explore responsible applications of AI in public safety.</p><i>-></i></a><a href="/policy" class="home-explore-card"><img src="${images[4]}" alt="Responsible AI workshop" loading="lazy"/><span>RESPONSIBLE AI</span><p>Explore the principles that guide accountable AI adoption.</p><i>-></i></a></div></div></section>
+  <section class="home-closing home-only" data-home-section><div class="home-closing-image"></div><div class="container"><div class="home-section-label">NITIAI / AI IN GOVERNANCE</div><h2>Understand governance.<br/><span>Explore what AI can do.</span></h2><p>Discover the ideas, systems, and responsible applications shaping the relationship between artificial intelligence and public governance.</p><div><a class="btn btn-secondary" href="/">Explore NITIAI <span>-></span></a><a class="btn btn-primary" href="/about">About the platform <span>-></span></a></div></div></section>`;
+}
+
+export { ecosystem, process };

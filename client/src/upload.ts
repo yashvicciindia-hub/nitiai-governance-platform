@@ -26,7 +26,7 @@ export function ingestFile(file: File, onToast: (title: string, detail?: string,
     state.file = file;
     state.fileUrl = isImage ? URL.createObjectURL(file) : "";
     state.csvRows = [];
-    state.analysis = { status: "idle", progress: 0, stageIndex: -1, findings: [] };
+    state.analysis = { status: "idle", progress: 0, stageIndex: -1, findings: [], result: null };
     state.selectedFinding = null;
     addAudit("FILE SELECTED", `${file.name} · ${formatBytes(file.size)}`, "info");
   });
@@ -49,7 +49,7 @@ export function removeFile() {
   if (state.fileUrl) URL.revokeObjectURL(state.fileUrl);
   update(() => {
     state.file = null; state.fileUrl = ""; state.csvRows = [];
-    state.analysis = { status: "idle", progress: 0, stageIndex: -1, findings: [] };
+    state.analysis = { status: "idle", progress: 0, stageIndex: -1, findings: [], result: null };
     state.selectedFinding = null;
     addAudit("ANALYSIS RESET", "Selected input removed from the workspace.", "info");
   });

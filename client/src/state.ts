@@ -1,3 +1,4 @@
+import type { DocumentAnalysis } from "./documentAnalysis";
 export type SectorKey = "construction" | "healthcare" | "agriculture" | "tax" | "transport" | "environment";
 
 export const state = {
@@ -10,6 +11,7 @@ export const state = {
     progress: 0,
     stageIndex: -1,
     findings: [] as any[],
+    result: null as DocumentAnalysis | null,
   },
   selectedFinding: null as any,
   audit: [] as { id: string; label: string; detail: string; time: string; kind: string }[],
@@ -38,7 +40,7 @@ export function clearAnalysis() {
   state.file = null;
   state.fileUrl = "";
   state.csvRows = [];
-  state.analysis = { status: "idle", progress: 0, stageIndex: -1, findings: [] };
+  state.analysis = { status: "idle", progress: 0, stageIndex: -1, findings: [], result: null };
   state.selectedFinding = null;
   state.audit = [];
 }

@@ -1,45 +1,43 @@
 import { state, update, addAudit } from "./state";
 import { sectors, stageNames } from "./data";
+import { analyzeDocument } from "./documentAnalysis";
 
 let runToken = 0;
 
-export function runAnalysis(onToast: (title: string, detail?: string, type?: string) => void) {
+export async function runAnalysis(onToast: (title: string, detail?: string, type?: string) => void) {
   if (!state.file || state.analysis.status === "running") return;
   runToken += 1;
   const token = runToken;
   const sector = sectors[state.sector];
   update(() => {
-    state.analysis = { status: "running", progress: 4, stageIndex: 0, findings: [] };
-    addAudit("ANALYSIS STARTED", `Illustrative analysis initiated for ${sector.label}.`, "active");
+    state.analysis = { status: "running", progress: 4, stageIndex: 0, findings: [], result: null };
+    addAudit("ANALYSIS STARTED", `Client-side document analysis initiated for ${sector.label}.`, "active");
   });
-  onToast("Analysis started", `${stageNames.length} stages queued for ${sector.label}.`);
-  let index = 0;
-  const advance = () => {
+  onToast("Analysis started", `Reading ${state.file.name} in the browser.`);
+  try {
+    const result = await analyzeDocument(state.file);
     if (token !== runToken) return;
-    if (index >= stageNames.length) {
-      update(() => {
-        state.analysis = { status: "complete", progress: 100, stageIndex: stageNames.length, findings: [{ ...sector.finding, id: `${Date.now()}-finding`, status: "Pending Review" }] };
-        addAudit("FINDINGS GENERATED", `1 illustrative finding prepared for human review.`, "complete");
-      });
-      onToast("Analysis complete", "One finding is ready for human review.", "success");
-      return;
-    }
     update(() => {
-      state.analysis.stageIndex = index;
-      state.analysis.progress = Math.max(8, Math.round(((index + .55) / stageNames.length) * 100));
-      if (index === 1) addAudit("DATA PROCESSED", "Input structure extracted for review.", "active");
+      state.analysis.stageIndex = 1;
+      state.analysis.progress = 55;
+      addAudit("TEXT EXTRACTION", result.status === "complete" ? "Readable content extracted in the browser." : result.message || "Document extraction requires review.", result.status === "complete" ? "active" : "info");
     });
-    window.setTimeout(() => {
-      if (token !== runToken) return;
-      update(() => {
-        state.analysis.progress = Math.round(((index + 1) / stageNames.length) * 100);
-        state.analysis.stageIndex = index + 1;
-      });
-      index += 1;
-      window.setTimeout(advance, 420);
-    }, 480);
-  };
-  advance();
+    await new Promise((resolve) => window.setTimeout(resolve, 260));
+    if (token !== runToken) return;
+    update(() => { state.analysis.stageIndex = 3; state.analysis.progress = 78; addAudit("GOVERNANCE SIGNALS", "Rule-based themes and requirements evaluated from extracted content.", "active"); });
+    await new Promise((resolve) => window.setTimeout(resolve, 260));
+    if (token !== runToken) return;
+    update(() => {
+      const finding = result.status === "complete" ? { title: result.risks[0] ? "Risk or compliance language requires review" : "Document signals ready for review", category: "CLIENT-SIDE GOVERNANCE SIGNAL", severity: result.risks.length ? "attention" : "info", explanation: result.risks[0] || `Detected ${result.keyTerms.length} recurring terms and ${result.requirements.length} requirement statements from the uploaded document.`, evidence: result.requirements[0] || result.keyTerms.join(" · ") || "No strong repeated terms detected.", recommendation: "Review extracted context, document provenance, and any flagged requirements before taking action.", review: "Human review required; this is deterministic browser-based analysis." , id: `${Date.now()}-finding`, status: "Pending Review" } : { title: "Document requires another format", category: "PROCESSING NOTICE", severity: "info", explanation: result.message || "The selected file could not be analyzed in the browser.", evidence: "No extracted text available", recommendation: "Try another file or convert the document to a supported format.", review: "Human review required.", id: `${Date.now()}-finding`, status: "Review Required" };
+      state.analysis = { status: result.status === "complete" ? "complete" : "idle", progress: result.status === "complete" ? 100 : 0, stageIndex: result.status === "complete" ? stageNames.length : -1, findings: [finding], result };
+      addAudit(result.status === "complete" ? "ANALYSIS READY" : "PROCESSING NOTICE", result.status === "complete" ? "Browser-based analysis complete; human review recommended." : result.message || "Try another file.", result.status === "complete" ? "complete" : "info");
+    });
+    onToast(result.status === "complete" ? "Analysis complete" : "Document needs attention", result.status === "complete" ? "Client-side signals are ready for human review." : result.message, result.status === "complete" ? "success" : "warning");
+  } catch (error) {
+    if (token !== runToken) return;
+    update(() => { state.analysis = { status: "idle", progress: 0, stageIndex: -1, findings: [], result: null }; addAudit("DOCUMENT ERROR", error instanceof Error ? error.message : "The document could not be processed.", "error"); });
+    onToast("Document could not be processed", error instanceof Error ? error.message : "Try another file.", "error");
+  }
 }
 
 export function resetRun() {
