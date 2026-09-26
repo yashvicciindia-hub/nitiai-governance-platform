@@ -19,13 +19,13 @@ const ecosystem = [
 ] as const;
 
 export const landscape = [
-  ["AGRICULTURE", "Technology, land, and public resources.", images[2]],
-  ["HEALTHCARE", "Systems designed around access and care.", images[3]],
-  ["EDUCATION", "Learning, opportunity, and public investment.", images[4]],
-  ["PUBLIC SAFETY", "Information, coordination, and human judgment.", images[1]],
-  ["URBAN GOVERNANCE", "Infrastructure that shapes everyday movement.", images[5]],
-  ["ENVIRONMENT", "Stewardship informed by evidence and context.", images[6]],
-  ["CITIZEN SERVICES", "The point where institutions meet people.", images[0]],
+  ["AGRICULTURE", "Technology, land, and public resources.", "https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=1200&q=80"],
+  ["HEALTHCARE", "Systems designed around access and care.", "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1200&q=80"],
+  ["EDUCATION", "Learning, opportunity, and public investment.", "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1200&q=80"],
+  ["PUBLIC SAFETY", "Information, coordination, and human judgment.", "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=1200&q=80"],
+  ["URBAN GOVERNANCE", "Infrastructure that shapes everyday movement.", "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=1200&q=80"],
+  ["ENVIRONMENT", "Stewardship informed by evidence and context.", "https://images.unsplash.com/photo-1473448912268-2022ce9509d8?auto=format&fit=crop&w=1200&q=80"],
+  ["CITIZEN SERVICES", "The point where institutions meet people.", "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1200&q=80"],
 ] as const;
 
 const process = [

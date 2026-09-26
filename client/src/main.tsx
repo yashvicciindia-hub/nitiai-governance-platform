@@ -78,6 +78,7 @@ const resourcePageState: {
   saved: string[];
   read: string[];
   checklist: boolean[];
+  selectedSectorId: string;
 } = {
   search: "",
   category: "All",
@@ -106,6 +107,7 @@ const resourcePageState: {
     }
   })(),
   checklist: Array(8).fill(false),
+  selectedSectorId: "",
 };
 
 const aboutWhyCopy = {
@@ -223,6 +225,324 @@ const resetResourceFilters = () => {
   renderResourcePage();
 };
 
+const createSectorArt = (label: string, palette: { bg: string; panel: string; accent: string; highlight: string; line: string }, icon: string) => {
+  const svg = `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 420" role="img" aria-label="${label}">
+      <rect width="620" height="420" rx="18" fill="${palette.bg}"/>
+      <rect x="42" y="36" width="536" height="348" rx="18" fill="${palette.panel}" stroke="${palette.line}" stroke-width="2"/>
+      <circle cx="122" cy="122" r="52" fill="${palette.highlight}" fill-opacity="0.26"/>
+      <path d="M96 166c30-44 90-50 136-18" stroke="${palette.accent}" stroke-width="12" stroke-linecap="round" fill="none"/>
+      <path d="M82 230h120M82 270h80M82 310h100" stroke="${palette.line}" stroke-width="10" stroke-linecap="round"/>
+      <path d="M286 118h182M286 168h212M286 218h160M286 268h208" stroke="${palette.line}" stroke-width="10" stroke-linecap="round"/>
+      <rect x="293" y="108" width="160" height="120" rx="18" fill="${palette.highlight}" fill-opacity="0.22" stroke="${palette.accent}" stroke-width="3"/>
+      <path d="M330 90v64M298 122h64" stroke="${palette.accent}" stroke-width="10" stroke-linecap="round"/>
+      <text x="310" y="282" fill="${palette.accent}" font-size="22" font-family="Arial, sans-serif" font-weight="700" letter-spacing="3">${icon}</text>
+      <text x="318" y="332" fill="${palette.accent}" font-size="26" font-family="Arial, sans-serif" font-weight="700">${label}</text>
+    </svg>
+  `;
+  return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+};
+
+const resourceSectorContent = [
+  {
+    id: "agriculture",
+    label: "AGRICULTURE",
+    short: "Farming, rural development, subsidies and agricultural services.",
+    image: createSectorArt("AGRICULTURE", { bg: "#edf5f1", panel: "#f8faf7", accent: "#2d6d55", highlight: "#95c7a6", line: "#c9ddd0" }, "FIELD"),
+    whatIs: "Agriculture covers farming, crop production, irrigation, agricultural markets, farmer support programmes and rural development. Public agencies may manage schemes, subsidies, infrastructure and services intended to support farmers and improve agricultural outcomes.",
+    detail: "This sector often blends field conditions, programme records, weather conditions, and logistical delivery. AI can help public agencies understand where services are reaching farmers, where delivery is delayed, and where data quality issues are creating misunderstanding.",
+    signals: ["Crop conditions", "Subsidy delivery", "Irrigation alerts", "Farmer support coverage"],
+    challenges: [
+      "Monitoring large numbers of agricultural programmes",
+      "Delays in delivering benefits and services",
+      "Fragmented information across departments",
+      "Difficulty tracking project implementation",
+      "Inefficient allocation of resources",
+      "Identifying gaps between planned and actual outcomes",
+      "Managing large volumes of farmer and programme data",
+    ],
+    helps: [
+      "Analyze large volumes of agricultural data",
+      "Identify unusual patterns that may require attention",
+      "Compare planned and reported project progress",
+      "Help analyze beneficiary and programme records",
+      "Predict demand for resources and services",
+      "Analyze agricultural documents and reports",
+      "Support better monitoring and decision-making",
+    ],
+  },
+  {
+    id: "healthcare",
+    label: "HEALTHCARE",
+    short: "Hospitals, medicines, public health and healthcare delivery.",
+    image: createSectorArt("HEALTHCARE", { bg: "#edf3fa", panel: "#f7fafc", accent: "#2f5f8b", highlight: "#9ec7e7", line: "#c5d8ed" }, "CARE"),
+    whatIs: "Public healthcare includes hospitals, clinics, medicines, health programmes, medical equipment and services delivered to communities. Effective governance is important for ensuring that resources and services reach the people who need them.",
+    detail: "Healthcare systems generate huge amounts of operational data, from wait times and inventory to service demand and patient flow. AI can help surface patterns more quickly, but final decisions still require professional judgement, privacy safeguards, and accountability.",
+    signals: ["Patient demand", "Medicine stock", "Wait times", "Service coverage"],
+    challenges: [
+      "Medicine and equipment shortages",
+      "Uneven distribution of healthcare resources",
+      "Long waiting times",
+      "Difficulty monitoring large healthcare systems",
+      "Fragmented patient and administrative information",
+      "Procurement and inventory management",
+      "Shortages of healthcare personnel",
+    ],
+    helps: [
+      "Analyze healthcare demand and service patterns",
+      "Predict medicine and equipment requirements",
+      "Identify unusual inventory patterns",
+      "Analyze hospital performance data",
+      "Help detect duplicate or inconsistent records",
+      "Summarize healthcare reports",
+      "Support resource planning and decision-making",
+    ],
+  },
+  {
+    id: "construction",
+    label: "CONSTRUCTION & INFRASTRUCTURE",
+    short: "Public projects, roads, buildings and infrastructure delivery.",
+    image: createSectorArt("INFRASTRUCTURE", { bg: "#f3f0ea", panel: "#fbfaf7", accent: "#7a5b2f", highlight: "#d9c18b", line: "#e1d4b6" }, "BUILD"),
+    whatIs: "This sector covers public infrastructure such as roads, bridges, schools, hospitals, water systems and other government-funded projects.",
+    detail: "Large infrastructure programmes involve procurement, contractor reporting, environmental conditions, and budget tracking. AI can help identify delays, cost drift, or missing milestone information early, making project oversight more transparent and manageable.",
+    signals: ["Budget drift", "Site progress", "Contract status", "Maintenance risk"],
+    challenges: [
+      "Project delays",
+      "Cost overruns",
+      "Difficulty monitoring project progress",
+      "Complex contractor and procurement records",
+      "Delayed reporting",
+      "Maintenance problems",
+      "Differences between planned and actual progress",
+    ],
+    helps: [
+      "Analyze project and contract documents",
+      "Compare budgets with reported expenditure",
+      "Monitor project milestones",
+      "Identify unusual cost patterns",
+      "Analyze inspection reports",
+      "Help predict project delays",
+      "Support infrastructure planning",
+    ],
+  },
+  {
+    id: "tax",
+    label: "TAX & REVENUE",
+    short: "Revenue collection, taxation, compliance and financial administration.",
+    image: createSectorArt("TAX & REVENUE", { bg: "#f3f0fa", panel: "#faf8ff", accent: "#56427c", highlight: "#bca8df", line: "#d7caef" }, "MONEY"),
+    whatIs: "Tax and revenue administration involves collecting public revenue, processing tax information, managing payments and supporting compliance with financial regulations.",
+    detail: "Revenue systems deal with high-volume transactions, irregular patterns, and regulatory complexity. AI can support quicker anomaly detection, document review, and prioritization, while still requiring careful human oversight and transparent review.",
+    signals: ["Audit anomalies", "Payment flow", "Compliance risk", "Collection trends"],
+    challenges: [
+      "Large volumes of financial records",
+      "Complex tax information",
+      "Duplicate or inconsistent records",
+      "Delayed payments",
+      "Difficulty identifying unusual patterns",
+      "Manual processing",
+      "Revenue forecasting",
+    ],
+    helps: [
+      "Analyze large volumes of financial data",
+      "Identify unusual transaction patterns",
+      "Detect duplicate or inconsistent records",
+      "Summarize financial documents",
+      "Support revenue forecasting",
+      "Prioritize records requiring human review",
+      "Help officials understand complex financial information",
+    ],
+  },
+  {
+    id: "transport",
+    label: "TRANSPORT",
+    short: "Mobility, public transport, roads and transportation systems.",
+    image: createSectorArt("TRANSPORT", { bg: "#eef3f4", panel: "#f7fbfb", accent: "#2f5e67", highlight: "#9bc8cc", line: "#c5dfe2" }, "FLOW"),
+    whatIs: "Transport governance covers roads, public transportation, traffic management, mobility planning and transportation infrastructure.",
+    detail: "Transport systems combine traffic data, movement patterns, public service demand, and infrastructure conditions. AI can help agencies interpret congestion and demand more quickly, but operational decisions still depend on real-world local context and human management.",
+    signals: ["Traffic density", "Route demand", "Safety hotspots", "Maintenance needs"],
+    challenges: [
+      "Traffic congestion",
+      "Public transport demand",
+      "Infrastructure maintenance",
+      "Road safety",
+      "Inefficient routes",
+      "Delayed infrastructure projects",
+      "Difficulty planning for changing travel patterns",
+    ],
+    helps: [
+      "Analyze traffic patterns",
+      "Predict congestion",
+      "Support route planning",
+      "Identify accident-prone areas",
+      "Predict infrastructure maintenance needs",
+      "Analyze public transport demand",
+      "Support transportation planning",
+    ],
+  },
+  {
+    id: "environment",
+    label: "ENVIRONMENT",
+    short: "Pollution, waste, natural resources and environmental monitoring.",
+    image: createSectorArt("ENVIRONMENT", { bg: "#edf4ee", panel: "#f8fbf8", accent: "#326c47", highlight: "#a6d7ab", line: "#c7ddc9" }, "PLANET"),
+    whatIs: "Environmental governance involves monitoring pollution, waste, water quality, natural resources, emissions and compliance with environmental standards.",
+    detail: "Environmental monitoring often depends on sensors, satellite data, field reports, and long-term trend analysis. AI can help surface anomalies and priority areas, but environmental decisions must be grounded in real conditions and local evidence.",
+    signals: ["Air quality", "Water quality", "Waste hotspots", "Land change"],
+    challenges: [
+      "Pollution monitoring",
+      "Waste management",
+      "Water quality monitoring",
+      "Environmental compliance",
+      "Large amounts of sensor data",
+      "Difficulty monitoring large geographical areas",
+      "Delayed detection of environmental problems",
+    ],
+    helps: [
+      "Analyze environmental sensor data",
+      "Detect unusual pollution patterns",
+      "Support air and water quality monitoring",
+      "Analyze satellite and geographic information",
+      "Predict environmental risks",
+      "Identify areas requiring inspection",
+      "Support faster environmental decision-making",
+    ],
+  },
+  {
+    id: "governance",
+    label: "GENERAL GOVERNANCE",
+    short: "Policy, public services, institutions, accountability and decision-making.",
+    image: createSectorArt("GOVERNANCE", { bg: "#eef4f5", panel: "#f7fafb", accent: "#355d68", highlight: "#a6ccd5", line: "#c8dfe5" }, "PUBLIC"),
+    whatIs: "Governance is the process through which institutions make decisions, manage public resources, deliver services and remain accountable to citizens.",
+    detail: "Governance work is shaped by policy, records, public programmes, institutional responsibilities, and evidence from many departments. AI can help make large bodies of information easier to understand, but transparency and accountability must remain central to every step.",
+    signals: ["Policy review", "Service delivery", "Programme outcomes", "Institutional risk"],
+    challenges: [
+      "Large amounts of information",
+      "Complex policies and regulations",
+      "Data spread across departments",
+      "Slow manual processes",
+      "Difficulty comparing information",
+      "Monitoring public programmes",
+      "Turning data into useful decisions",
+    ],
+    helps: [
+      "Summarize complex policies",
+      "Analyze government documents",
+      "Compare policies and frameworks",
+      "Identify patterns across large datasets",
+      "Support public service planning",
+      "Help monitor programmes",
+      "Provide decision-support insights",
+    ],
+  },
+];
+
+const toggleResourcesSector = (sectorId: string) => {
+  resourcePageState.selectedSectorId = sectorId;
+  renderResourcePage();
+};
+
+const toggleEvidenceTab = (_tabId: string) => {
+  renderResourcePage();
+};
+
+const renderResourcePage = () => {
+  const container = document.getElementById("resources-page");
+  if (!container) return;
+
+  const selectedSector = resourceSectorContent.find((sector) => sector.id === resourcePageState.selectedSectorId) || null;
+
+  container.innerHTML = `
+    <div class="resources-simple-page">
+      <header class="resources-simple-hero">
+        <div class="resources-kicker">RESOURCES</div>
+        <h1>Understanding AI across<br>public sectors.</h1>
+        <p>Explore how artificial intelligence can help address challenges across important areas of public governance.</p>
+      </header>
+
+      <section class="resources-simple-section">
+        <div class="resources-simple-label">EXPLORE SECTORS</div>
+        <div class="resources-sector-grid">
+          ${resourceSectorContent.map((sector) => `
+            <button class="resource-sector-card ${selectedSector?.id === sector.id ? "active" : ""}" type="button" data-sector-id="${sector.id}">
+              <span class="resource-sector-icon">${sector.label === "AGRICULTURE" ? "✿" : sector.label === "HEALTHCARE" ? "✚" : sector.label === "CONSTRUCTION & INFRASTRUCTURE" ? "▦" : sector.label === "TAX & REVENUE" ? "▣" : sector.label === "TRANSPORT" ? "◈" : sector.label === "ENVIRONMENT" ? "◌" : "▤"}</span>
+              <span class="resource-sector-name">${sector.label}</span>
+              <span class="resource-sector-short">${sector.short}</span>
+            </button>
+          `).join("")}
+        </div>
+      </section>
+
+      <section class="resource-sector-panel ${selectedSector ? "visible" : "placeholder"}">
+        ${selectedSector ? `
+          <div class="resource-sector-panel-header">
+            <div>
+              <div class="resource-sector-panel-kicker">${selectedSector.label}</div>
+              <h2>${selectedSector.label}</h2>
+            </div>
+            <button class="btn btn-quiet btn-small" type="button" data-sector-close="true">CLOSE</button>
+          </div>
+
+          <div class="resource-sector-info-grid">
+            <div class="resource-sector-column">
+              <div class="resource-info-block">
+                <span class="resource-block-label">01</span>
+                <h3>WHAT IS IT?</h3>
+                <p>${selectedSector.whatIs}</p>
+              </div>
+
+              <div class="resource-info-block resource-info-block-alt">
+                <span class="resource-block-label">02</span>
+                <h3>WHY THIS MATTERS</h3>
+                <p>${selectedSector.detail}</p>
+              </div>
+
+              <div class="resource-info-block">
+                <span class="resource-block-label">03</span>
+                <h3>KEY CHALLENGES</h3>
+                <ul>
+                  ${selectedSector.challenges.map((item) => `<li>${item}</li>`).join("")}
+                </ul>
+              </div>
+            </div>
+
+            <div class="resource-sector-column">
+              <div class="resource-info-block resource-info-block-alt">
+                <span class="resource-block-label">04</span>
+                <h3>HOW CAN AI HELP?</h3>
+                <ul>
+                  ${selectedSector.helps.map((item) => `<li>${item}</li>`).join("")}
+                </ul>
+              </div>
+
+              <div class="resource-info-block">
+                <span class="resource-block-label">05</span>
+                <h3>COMMON SIGNALS</h3>
+                <ul>
+                  ${selectedSector.signals.map((item) => `<li>${item}</li>`).join("")}
+                </ul>
+              </div>
+
+              <div class="resource-sector-illustration" aria-label="${selectedSector.label} illustration">
+                <div class="resource-illustration-frame">
+                  <img class="resource-sector-image" src="${selectedSector.image}" alt="${selectedSector.label} illustration" />
+                </div>
+              </div>
+            </div>
+          </div>
+        ` : `
+          <div class="resource-panel-empty">
+            <p>Select a sector to explore its challenges and the role AI can play.</p>
+          </div>
+        `}
+      </section>
+    </div>
+  `;
+};
+
+const renderGlossarySelection = () => {
+  const glossaryItem = document.querySelector(`[data-glossary-term="${CSS.escape(resourcePageState.selectedGlossary || "")}"]`);
+  if (glossaryItem) glossaryItem.parentElement?.classList.add("open");
+};
+
 const toggleSavedResource = (resourceId: string) => {
   const exists = resourcePageState.saved.includes(resourceId);
   if (exists) {
@@ -248,298 +568,7 @@ const toggleReadResource = (resourceId: string) => {
 const openResourceDetail = (resourceId: string) => {
   const resource = getResourceById(resourceId);
   resourcePageState.selectedResourceId = resource.id;
-  const related = (resource.related || []).map((relatedId) => getResourceById(relatedId));
-  const isSaved = resourcePageState.saved.includes(resource.id);
-  const isRead = resourcePageState.read.includes(resource.id);
-  const detailHtml = `
-    <div class="drawer-kicker">Resource details / ${esc(resource.category)}</div>
-    <h2 class="drawer-title">${esc(resource.title)}</h2>
-    <!--BODY-->
-    <div class="drawer-section">
-      <h4>Resource metadata</h4>
-      <p><strong>${esc(resource.type)}</strong> · ${esc(resource.category)}<br/>${esc(resource.sector)}<br/>${esc(resource.topics.join(" • "))}</p>
-    </div>
-    <div class="drawer-section">
-      <h4>Overview</h4>
-      <p>${esc(resource.overview)}</p>
-    </div>
-    <div class="drawer-section">
-      <h4>Key concepts</h4>
-      <ul class="resource-detail-list">${resource.keyConcepts.map((item) => `<li>${esc(item)}</li>`).join("")}</ul>
-    </div>
-    <div class="drawer-section">
-      <h4>Practical considerations</h4>
-      <ul class="resource-detail-list">${resource.practicalConsiderations.map((item) => `<li>${esc(item)}</li>`).join("")}</ul>
-    </div>
-    <div class="drawer-section">
-      <h4>Related knowledge</h4>
-      <div class="resource-related-list">${related.map((item) => `<button class="resource-related-item" data-resource-view="${esc(item.id)}">${esc(item.title)}</button>`).join("")}</div>
-    </div>
-    ${resource.id === "ai-risk-assessment" ? `<div class="drawer-section">
-      <h4>Governance Lab</h4>
-      <p>Use the Governance Lab to explore an illustrative AI-assisted review workflow.</p>
-      <div class="drawer-actions"><button class="btn btn-primary btn-small" data-open-governance-lab="true">Open Governance Lab</button></div>
-    </div>` : ""}
-    <div class="drawer-actions">
-      <button class="btn btn-primary btn-small" data-resource-read="${esc(resource.id)}">${isRead ? "READ ✓" : "MARK AS READ"}</button>
-      <button class="btn btn-secondary btn-small" data-resource-save="${esc(resource.id)}">${isSaved ? "SAVED" : "SAVE TO REFERENCE LIST"}</button>
-      <button class="btn btn-quiet btn-small" data-action="close-overlay">CLOSE</button>
-    </div>
-  `;
-  renderDrawer(detailHtml);
-};
-
-const renderResourcePage = () => {
-  const container = document.getElementById("resources-page");
-  if (!container) return;
-
-  const filteredResources = getFilteredResources();
-  const glossaryTerms = getFilteredGlossary();
-  const featureResource = filteredResources.find((resource) => resource.id === "ai-governance-readiness") || filteredResources[0] || governanceResources[0];
-  const activeFilterLabels = [
-    resourcePageState.category !== "All" ? `CATEGORY: ${resourcePageState.category}` : null,
-    resourcePageState.sector !== "All" ? `SECTOR: ${resourcePageState.sector}` : null,
-    resourcePageState.topic !== "All" ? `TOPIC: ${resourcePageState.topic}` : null,
-    resourcePageState.type !== "All" ? `TYPE: ${resourcePageState.type}` : null,
-  ].filter(Boolean);
-
-  const countMetrics = [
-    { label: "KNOWLEDGE RESOURCES", value: formatCount(filteredResources.length) },
-    { label: "GOVERNANCE GUIDES", value: formatCount(filteredResources.filter((resource) => ["Guide", "Framework", "Concept"].includes(resource.type)).length) },
-    { label: "SECTOR GUIDES", value: formatCount(filteredResources.filter((resource) => resource.category === "Sector Guidance").length) },
-    { label: "PRACTICAL TOOLS", value: formatCount(filteredResources.filter((resource) => ["Checklist", "Governance Tool"].includes(resource.type)).length) },
-  ];
-
-  const progress = getProgress();
-  const saved = getSavedReferenceList();
-  const alphabet = ["ALL", "A", "B", "C", "D", "E", "F", "G", "H", "I", "P", "R", "T", "V"];
-
-  const detailSection = glossaryTerms.length ? glossaryTerms.map((entry) => `<div class="glossary-item ${resourcePageState.selectedGlossary === entry.term ? "open" : ""}"><button class="glossary-term" data-glossary-term="${esc(entry.term)}">${esc(entry.term)}</button>${resourcePageState.selectedGlossary === entry.term ? `<div class="glossary-definition"><p>${esc(entry.definition)}</p></div>` : ""}</div>`).join("") : `<div class="resource-empty-state"><p>No terms match the current glossary filter.</p><button class="btn btn-quiet btn-small" data-resource-clear="true">CLEAR FILTERS</button></div>`;
-
-  container.innerHTML = `
-    <div class="resources-page">
-      <header class="resources-header">
-        <div class="resources-kicker">NITIAI KNOWLEDGE SYSTEM</div>
-        <h1>Governance Knowledge Center</h1>
-        <p>Explore AI governance concepts, responsible AI principles, sector guidance, practical checklists, and governance knowledge within NITIAI.</p>
-      </header>
-
-      <section class="resources-search-panel">
-        <div class="resources-search-row">
-          <div class="resources-search-box">
-            <span class="resources-search-icon">⌕</span>
-            <input id="resources-search" class="resources-search-input" type="search" value="${esc(resourcePageState.search)}" placeholder="Search governance resources, topics, principles..." aria-label="Search governance resources" />
-          </div>
-          <button class="btn btn-primary btn-small" data-resource-clear="true">CLEAR FILTERS</button>
-        </div>
-        <div class="resources-filter-row">
-          <div class="resource-field">
-            <label>CATEGORY</label>
-            <select id="resource-category" aria-label="Filter by category">
-              ${["All", "AI Governance", "Responsible AI", "Policy & Regulation", "Standards & Principles", "Sector Guidance", "Practical Guides"].map((value) => `<option value="${esc(value)}" ${resourcePageState.category === value ? "selected" : ""}>${esc(value)}</option>`).join("")}
-            </select>
-          </div>
-          <div class="resource-field">
-            <label>SECTOR</label>
-            <select id="resource-sector" aria-label="Filter by sector">
-              ${["All", "Construction", "Healthcare", "Agriculture", "Tax & Revenue", "Transport", "Environment", "General Governance"].map((value) => `<option value="${esc(value)}" ${resourcePageState.sector === value ? "selected" : ""}>${esc(value)}</option>`).join("")}
-            </select>
-          </div>
-          <div class="resource-field">
-            <label>TOPIC</label>
-            <select id="resource-topic" aria-label="Filter by topic">
-              ${["All", ...topicOptions].map((value) => `<option value="${esc(value)}" ${resourcePageState.topic === value ? "selected" : ""}>${esc(value)}</option>`).join("")}
-            </select>
-          </div>
-          <div class="resource-field">
-            <label>TYPE</label>
-            <select id="resource-type" aria-label="Filter by resource type">
-              ${["All", ...resourceTypes].map((value) => `<option value="${esc(value)}" ${resourcePageState.type === value ? "selected" : ""}>${esc(value)}</option>`).join("")}
-            </select>
-          </div>
-        </div>
-        <div class="resources-active-filters">
-          ${activeFilterLabels.length ? activeFilterLabels.map((label) => `<span>${esc(label)}</span>`).join("") : `<span class="empty">NO ACTIVE FILTERS</span>`}
-        </div>
-      </section>
-
-      <section class="resources-overview">
-        ${countMetrics.map((metric) => `
-          <div class="resource-metric">
-            <strong>${esc(metric.value)}</strong>
-            <span>${esc(metric.label)}</span>
-          </div>
-        `).join("")}
-      </section>
-
-      <section class="resources-featured">
-        <div class="featured-copy">
-          <div class="eyebrow">FEATURED KNOWLEDGE</div>
-          <h2>${esc(featureResource.title)}</h2>
-          <p>${esc(featureResource.description)}</p>
-          <div class="featured-meta">
-            <div><span>TYPE</span><strong>${esc(featureResource.type)}</strong></div>
-            <div><span>CATEGORY</span><strong>${esc(featureResource.category)}</strong></div>
-            <div><span>TOPICS</span><strong>${esc(featureResource.topics.slice(0, 3).join(" • "))}</strong></div>
-          </div>
-          <button class="btn btn-primary" data-resource-view="${esc(featureResource.id)}">EXPLORE RESOURCE</button>
-        </div>
-        <div class="featured-panel">
-          <div class="featured-panel-header">RESOURCE FRAMEWORK</div>
-          <ul>
-            ${featureResource.keyConcepts.map((concept) => `<li>${esc(concept)}</li>`).join("")}
-          </ul>
-        </div>
-      </section>
-
-      <section class="resources-topic-explorer">
-        <div class="section-header-row resources-section-header">
-          <div>
-            <div class="eyebrow">TOPIC EXPLORER</div>
-            <h3>Governance themes</h3>
-          </div>
-          <button class="btn btn-quiet btn-small" data-resource-topic="All">VIEW ALL TOPICS</button>
-        </div>
-        <div class="topic-pills">
-          ${topicOptions.map((topic) => `<button class="topic-pill ${resourcePageState.topic === topic ? "active" : ""}" data-resource-topic="${esc(topic)}">${esc(topic)}</button>`).join("")}
-        </div>
-      </section>
-
-      <section class="resources-library">
-        <div class="resources-library-header">
-          <div class="eyebrow">RESOURCE LIBRARY</div>
-          <div class="showing-count">SHOWING ${filteredResources.length} OF ${governanceResources.length} RESOURCES</div>
-        </div>
-        ${filteredResources.length ? `
-          <div class="resource-grid">
-            ${filteredResources.map((resource) => `
-              <article class="resource-item ${resourcePageState.selectedResourceId === resource.id ? "selected" : ""}">
-                <div class="resource-pill">${esc(resource.type)}</div>
-                <h4>${esc(resource.title)}</h4>
-                <p>${esc(resource.description)}</p>
-                <div class="resource-meta-row">
-                  <span>${esc(resource.category)}</span>
-                  <span>${esc(resource.sector)}</span>
-                </div>
-                <div class="resource-topics">${resource.topics.map((topic) => `<span>${esc(topic)}</span>`).join("")}</div>
-                <button class="btn btn-primary btn-small" data-resource-view="${esc(resource.id)}">VIEW RESOURCE</button>
-              </article>
-            `).join("")}
-          </div>
-        ` : `
-          <div class="resource-empty-state">
-            <h3>NO MATCHING RESOURCES</h3>
-            <p>No knowledge resources match your current search and filters.</p>
-            <button class="btn btn-primary btn-small" data-resource-clear="true">CLEAR FILTERS</button>
-          </div>
-        `}
-      </section>
-
-      <section class="resources-relationship">
-        <div class="section-header-row resources-section-header">
-          <div>
-            <div class="eyebrow">RESOURCE RELATIONSHIP EXPLORER</div>
-            <h3>Governance connections</h3>
-          </div>
-        </div>
-        <div class="relationship-graph">
-          <svg viewBox="0 0 640 260" role="img" aria-label="AI governance relationships">
-            <path d="M160 120 L270 120 M340 120 L450 120 M500 120 L560 120 M275 120 L275 65 L340 65" />
-            <path d="M275 120 L275 180 L340 180" />
-            <path d="M450 120 L450 65 L500 65" />
-            <path d="M450 120 L450 180 L500 180" />
-          </svg>
-          <button class="graph-node active" data-relationship-node="AI Governance" style="left:18px; top:94px;">AI Governance</button>
-          <button class="graph-node ${resourcePageState.selectedRelationship === "Privacy" ? "active" : ""}" data-relationship-node="Privacy" style="left:176px; top:60px;">Privacy</button>
-          <button class="graph-node ${resourcePageState.selectedRelationship === "Human Oversight" ? "active" : ""}" data-relationship-node="Human Oversight" style="left:176px; top:168px;">Oversight</button>
-          <button class="graph-node ${resourcePageState.selectedRelationship === "Accountability" ? "active" : ""}" data-relationship-node="Accountability" style="left:357px; top:94px;">Accountability</button>
-          <button class="graph-node ${resourcePageState.selectedRelationship === "Data Governance" ? "active" : ""}" data-relationship-node="Data Governance" style="left:506px; top:48px;">Data</button>
-          <button class="graph-node ${resourcePageState.selectedRelationship === "Auditability" ? "active" : ""}" data-relationship-node="Auditability" style="left:506px; top:168px;">Audit</button>
-        </div>
-      </section>
-
-      <section class="resources-toolkit">
-        <div class="section-header-row resources-section-header">
-          <div>
-            <div class="eyebrow">GOVERNANCE TOOLKIT</div>
-            <h3>AI Governance Readiness</h3>
-          </div>
-          <button class="btn btn-quiet btn-small" data-checklist-reset="true">RESET CHECKLIST</button>
-        </div>
-        <div class="checklist-panel">
-          <div class="checklist-header">
-            <div>
-              <strong>READINESS</strong>
-              <span>${progress.checked} / ${progress.total}</span>
-            </div>
-            <div class="checklist-status ${progress.percent >= 75 ? "ready" : progress.percent >= 35 ? "partial" : "review"}">${progress.percent >= 75 ? "READY" : progress.percent >= 35 ? "PARTIALLY READY" : "REVIEW REQUIRED"}</div>
-          </div>
-          <div class="progress-track"><div class="progress-fill" style="width:${progress.percent}%"></div></div>
-          <div class="tool-checklist">
-            ${[
-              ["Data source identified", "Data quality reviewed"],
-              ["Potential risks identified", "Risk categories documented"],
-              ["Human reviewer identified", "Escalation mechanism defined"],
-              ["AI role documented", "Findings can be explained"]
-            ].map(([itemA, itemB], groupIndex) => `
-              <div class="checklist-row">
-                <label class="checklist-item ${resourcePageState.checklist[groupIndex * 2] ? "checked" : ""}"><input type="checkbox" data-checklist-item="${groupIndex * 2}" ${resourcePageState.checklist[groupIndex * 2] ? "checked" : ""} /><span>${esc(itemA)}</span></label>
-                <label class="checklist-item ${resourcePageState.checklist[groupIndex * 2 + 1] ? "checked" : ""}"><input type="checkbox" data-checklist-item="${groupIndex * 2 + 1}" ${resourcePageState.checklist[groupIndex * 2 + 1] ? "checked" : ""} /><span>${esc(itemB)}</span></label>
-              </div>
-            `).join("") }
-          </div>
-        </div>
-      </section>
-
-      <section class="resources-glossary">
-        <div class="section-header-row resources-section-header">
-          <div>
-            <div class="eyebrow">GOVERNANCE GLOSSARY</div>
-            <h3>AI Governance Glossary</h3>
-          </div>
-        </div>
-        <div class="glossary-panel">
-          <div class="glossary-controls">
-            <input id="glossary-search" class="resources-search-input glossary-input" type="search" value="${esc(resourcePageState.glossarySearch)}" placeholder="Search glossary..." aria-label="Search glossary" />
-          </div>
-          <div class="alphabet-nav">
-            ${alphabet.map((letter) => `<button class="alphabet-button ${resourcePageState.glossaryLetter === letter ? "active" : ""}" data-glossary-letter="${esc(letter)}">${esc(letter)}</button>`).join("")}
-          </div>
-          <div class="glossary-list">${detailSection}</div>
-        </div>
-      </section>
-
-      <section class="resources-reference">
-        <div class="section-header-row resources-section-header">
-          <div>
-            <div class="eyebrow">MY REFERENCE LIST</div>
-            <h3>Saved knowledge</h3>
-          </div>
-        </div>
-        <div class="reference-panel">
-          <div class="reference-count">${saved.length} SAVED</div>
-          ${saved.length ? `
-            <div class="reference-list">
-              ${saved.map((resource: typeof governanceResources[number]) => `
-                <div class="reference-item">
-                  <button class="reference-title" data-resource-view="${esc(resource.id)}">${esc(resource.title)}</button>
-                  <div class="reference-actions">
-                    <button class="btn btn-quiet btn-small" data-resource-view="${esc(resource.id)}">OPEN</button>
-                    <button class="btn btn-quiet btn-small" data-resource-remove="${esc(resource.id)}">REMOVE</button>
-                  </div>
-                </div>
-              `).join("")}
-            </div>
-          ` : `<div class="resource-empty-state compact"><p>No saved resources yet.</p><button class="btn btn-primary btn-small" data-resource-clear="true">CLEAR FILTERS</button></div>`}
-        </div>
-      </section>
-    </div>
-  `;
-};
-
-const renderGlossarySelection = () => {
-  const glossaryItem = document.querySelector(`[data-glossary-term="${CSS.escape(resourcePageState.selectedGlossary || "")}"]`);
-  if (glossaryItem) glossaryItem.parentElement?.classList.add("open");
+  renderDrawer(`<div class="drawer-kicker">Resource / ${esc(resource.category)}</div><h2 class="drawer-title">${esc(resource.title)}</h2><!--BODY--><div class="drawer-section"><h4>Overview</h4><p>${esc(resource.overview)}</p></div><div class="drawer-section"><h4>Key concepts</h4><ul class="resource-detail-list">${resource.keyConcepts.map((item) => `<li>${esc(item)}</li>`).join("")}</ul></div><div class="drawer-section"><h4>Practical considerations</h4><ul class="resource-detail-list">${resource.practicalConsiderations.map((item) => `<li>${esc(item)}</li>`).join("")}</ul></div><div class="drawer-actions"><button class="btn btn-primary btn-small" data-resource-read="${esc(resource.id)}">${resourcePageState.read.includes(resource.id) ? "READ ✓" : "MARK AS READ"}</button><button class="btn btn-secondary btn-small" data-resource-save="${esc(resource.id)}">${resourcePageState.saved.includes(resource.id) ? "SAVED" : "SAVE TO REFERENCE LIST"}</button><button class="btn btn-quiet btn-small" data-action="close-overlay">CLOSE</button></div>`);
 };
 
 const toggleChecklistItem = (index: number) => {
@@ -905,6 +934,9 @@ root.addEventListener("click", (event: Event) => { const target = event.target a
   const resourceView = target.closest("[data-resource-view]") as HTMLElement; if (resourceView) { openResourceDetail(resourceView.dataset.resourceView || resourcePageState.selectedResourceId); }
   const resourceSave = target.closest("[data-resource-save]") as HTMLElement; if (resourceSave) { toggleSavedResource(resourceSave.dataset.resourceSave || ""); }
   const resourceRead = target.closest("[data-resource-read]") as HTMLElement; if (resourceRead) { toggleReadResource(resourceRead.dataset.resourceRead || ""); }
+  const sectorSelect = target.closest("[data-sector-id]") as HTMLElement; if (sectorSelect) { toggleResourcesSector(sectorSelect.dataset.sectorId || "agriculture"); }
+  const sectorClose = target.closest("[data-sector-close]") as HTMLElement; if (sectorClose) { resourcePageState.selectedSectorId = ""; renderResourcePage(); }
+  const evidenceTab = target.closest("[data-evidence-tab]") as HTMLElement; if (evidenceTab) { toggleEvidenceTab(evidenceTab.dataset.evidenceTab || "financial-records"); }
   const glossaryTerm = target.closest("[data-glossary-term]") as HTMLElement; if (glossaryTerm) { resourcePageState.selectedGlossary = glossaryTerm.dataset.glossaryTerm || ""; renderResourcePage(); }
   const resourceRemove = target.closest("[data-resource-remove]") as HTMLElement; if (resourceRemove) { resourcePageState.saved = resourcePageState.saved.filter((id: string) => id !== (resourceRemove.dataset.resourceRemove || "")); persistResourceState("nitiai-resource-saved", resourcePageState.saved); renderResourcePage(); }
   const clearFilters = target.closest("[data-resource-clear]") as HTMLElement; if (clearFilters) { resetResourceFilters(); }
