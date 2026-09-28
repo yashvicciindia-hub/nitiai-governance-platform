@@ -111,17 +111,17 @@ const resourcePageState: {
 };
 
 const aboutWhyCopy = {
-  complexity: {
-    label: "COMPLEXITY",
-    body: "Governance involves policies, documents, records, regulations, and information that can be difficult to process at scale.",
+  accountability: {
+    label: "ACCOUNTABILITY",
+    body: "AI can help make complex governance processes more understandable and traceable, but technology alone cannot establish accountability. NITIAI focuses on making the relationship between data, systems, decisions, and institutional responsibility clearer. AI should support professionals by surfacing relevant information, identifying patterns, and improving visibility into processes while keeping responsibility with the people and institutions authorized to make decisions.",
   },
-  clarity: {
-    label: "CLARITY",
-    body: "AI can help structure complex information and make important patterns easier to understand.",
+  politicalWill: {
+    label: "POLITICAL WILL",
+    body: "Technology becomes meaningful in governance only when institutions have the willingness and capacity to use it responsibly. Political will shapes whether AI systems are adopted, how resources are allocated, which problems receive attention, and what safeguards are established. NITIAI examines AI not only as a technical capability, but also in the context of policy priorities, institutional choices, implementation constraints, and public interest.",
   },
-  responsibility: {
-    label: "RESPONSIBILITY",
-    body: "Technology should support governance professionals rather than remove human judgement and accountability.",
+  outcome: {
+    label: "OUTCOME",
+    body: "The value of AI in governance should ultimately be understood through its real-world outcomes. Better analysis, faster access to information, improved monitoring, or more efficient public services matter only when they contribute to meaningful and measurable results. NITIAI focuses on connecting AI capabilities with practical governance outcomes while recognizing the importance of evaluation, evidence, transparency, and continuous human oversight.",
   },
 } as const;
 
@@ -248,7 +248,8 @@ const resourceSectorContent = [
     id: "agriculture",
     label: "AGRICULTURE",
     short: "Farming, rural development, subsidies and agricultural services.",
-    image: createSectorArt("AGRICULTURE", { bg: "#edf5f1", panel: "#f8faf7", accent: "#2d6d55", highlight: "#95c7a6", line: "#c9ddd0" }, "FIELD"),
+    image: "https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=1200&q=82",
+    imageAlt: "Agricultural fields and crop monitoring with environmental data overlays",
     whatIs: "Agriculture covers farming, crop production, irrigation, agricultural markets, farmer support programmes and rural development. Public agencies may manage schemes, subsidies, infrastructure and services intended to support farmers and improve agricultural outcomes.",
     detail: "This sector often blends field conditions, programme records, weather conditions, and logistical delivery. AI can help public agencies understand where services are reaching farmers, where delivery is delayed, and where data quality issues are creating misunderstanding.",
     signals: ["Crop conditions", "Subsidy delivery", "Irrigation alerts", "Farmer support coverage"],
@@ -261,21 +262,14 @@ const resourceSectorContent = [
       "Identifying gaps between planned and actual outcomes",
       "Managing large volumes of farmer and programme data",
     ],
-    helps: [
-      "Analyze large volumes of agricultural data",
-      "Identify unusual patterns that may require attention",
-      "Compare planned and reported project progress",
-      "Help analyze beneficiary and programme records",
-      "Predict demand for resources and services",
-      "Analyze agricultural documents and reports",
-      "Support better monitoring and decision-making",
-    ],
+    helpParagraph: "AI can support agriculture by combining satellite imagery, weather information, soil measurements, crop records, and field observations to identify conditions that may require attention and help agencies target monitoring and support more effectively. It can analyze patterns in vegetation health, rainfall, temperature, irrigation use, and historical yields to highlight areas where productivity or risk may be changing over time. In practice, these systems can assist farmers, agricultural ministries, and planning teams by surfacing signals related to crop stress, pest pressure, water demand, and supply bottlenecks before they become major issues. Human oversight remains essential: agronomic experts, local officers, and farmers are still responsible for interpreting findings, validating the context, and deciding on interventions or policy responses.",
   },
   {
     id: "healthcare",
     label: "HEALTHCARE",
     short: "Hospitals, medicines, public health and healthcare delivery.",
-    image: createSectorArt("HEALTHCARE", { bg: "#edf3fa", panel: "#f7fafc", accent: "#2f5f8b", highlight: "#9ec7e7", line: "#c5d8ed" }, "CARE"),
+    image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1200&q=82",
+    imageAlt: "Modern healthcare facility with clinicians reviewing patient information and operational data",
     whatIs: "Public healthcare includes hospitals, clinics, medicines, health programmes, medical equipment and services delivered to communities. Effective governance is important for ensuring that resources and services reach the people who need them.",
     detail: "Healthcare systems generate huge amounts of operational data, from wait times and inventory to service demand and patient flow. AI can help surface patterns more quickly, but final decisions still require professional judgement, privacy safeguards, and accountability.",
     signals: ["Patient demand", "Medicine stock", "Wait times", "Service coverage"],
@@ -288,21 +282,14 @@ const resourceSectorContent = [
       "Procurement and inventory management",
       "Shortages of healthcare personnel",
     ],
-    helps: [
-      "Analyze healthcare demand and service patterns",
-      "Predict medicine and equipment requirements",
-      "Identify unusual inventory patterns",
-      "Analyze hospital performance data",
-      "Help detect duplicate or inconsistent records",
-      "Summarize healthcare reports",
-      "Support resource planning and decision-making",
-    ],
+    helpParagraph: "AI can support healthcare governance by analyzing service demand, facility utilization, medication stock, referral patterns, and administrative data to help identify operational pressures earlier and improve resource planning. It can surface anomalies across patient flow, staffing patterns, or inventory movements, allowing teams to investigate whether an issue reflects seasonal demand, service disruption, coordinated regional activity, or data quality concerns. These tools can assist healthcare professionals by sorting large volumes of information, highlighting unusual patterns, and supporting decisions about staffing, supplies, and service redesign. However, AI should not replace clinical judgment, professional expertise, or institutional accountability. Privacy, safety, validation, and clear human oversight remain essential when using AI in healthcare settings.",
   },
   {
     id: "construction",
     label: "CONSTRUCTION & INFRASTRUCTURE",
     short: "Public projects, roads, buildings and infrastructure delivery.",
-    image: createSectorArt("INFRASTRUCTURE", { bg: "#f3f0ea", panel: "#fbfaf7", accent: "#7a5b2f", highlight: "#d9c18b", line: "#e1d4b6" }, "BUILD"),
+    image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1200&q=82",
+    imageAlt: "Construction site and infrastructure project with monitoring and engineering data",
     whatIs: "This sector covers public infrastructure such as roads, bridges, schools, hospitals, water systems and other government-funded projects.",
     detail: "Large infrastructure programmes involve procurement, contractor reporting, environmental conditions, and budget tracking. AI can help identify delays, cost drift, or missing milestone information early, making project oversight more transparent and manageable.",
     signals: ["Budget drift", "Site progress", "Contract status", "Maintenance risk"],
@@ -315,21 +302,14 @@ const resourceSectorContent = [
       "Maintenance problems",
       "Differences between planned and actual progress",
     ],
-    helps: [
-      "Analyze project and contract documents",
-      "Compare budgets with reported expenditure",
-      "Monitor project milestones",
-      "Identify unusual cost patterns",
-      "Analyze inspection reports",
-      "Help predict project delays",
-      "Support infrastructure planning",
-    ],
+    helpParagraph: "AI can support construction and infrastructure governance by combining project records, site imagery, sensor readings, contractor updates, and historical delivery data to identify deviations from established plans. Computer vision can help monitor progress against schedules, while pattern analysis can flag unusual cost movement, delayed tasks, or recurring safety or quality issues. These tools can assist public agencies and engineering teams by surfacing risk earlier, prioritizing inspections, and comparing current conditions with expected milestones. Yet construction decisions are shaped by local context, site conditions, regulatory requirements, and engineering judgment. Human oversight remains central to interpreting risk, verifying findings, and ensuring public safety and accountability throughout the project lifecycle.",
   },
   {
     id: "tax",
     label: "TAX & REVENUE",
     short: "Revenue collection, taxation, compliance and financial administration.",
-    image: createSectorArt("TAX & REVENUE", { bg: "#f3f0fa", panel: "#faf8ff", accent: "#56427c", highlight: "#bca8df", line: "#d7caef" }, "MONEY"),
+    image: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=1200&q=82",
+    imageAlt: "Financial administration workspace with tax and revenue documentation and analysis",
     whatIs: "Tax and revenue administration involves collecting public revenue, processing tax information, managing payments and supporting compliance with financial regulations.",
     detail: "Revenue systems deal with high-volume transactions, irregular patterns, and regulatory complexity. AI can support quicker anomaly detection, document review, and prioritization, while still requiring careful human oversight and transparent review.",
     signals: ["Audit anomalies", "Payment flow", "Compliance risk", "Collection trends"],
@@ -342,21 +322,14 @@ const resourceSectorContent = [
       "Manual processing",
       "Revenue forecasting",
     ],
-    helps: [
-      "Analyze large volumes of financial data",
-      "Identify unusual transaction patterns",
-      "Detect duplicate or inconsistent records",
-      "Summarize financial documents",
-      "Support revenue forecasting",
-      "Prioritize records requiring human review",
-      "Help officials understand complex financial information",
-    ],
+    helpParagraph: "AI can support tax and revenue governance by examining transaction records, payment histories, filing patterns, and document metadata to flag unusual activity or inconsistent reporting for human review. It can identify recurring anomalies, compare records across categories and time periods, and help analysts prioritize cases that warrant verification. For agencies, AI can also assist with document triage, ledger reconciliation, and the early detection of duplicate or incomplete submissions. These systems are best used as decision-support tools rather than automatic decision-makers. Human reviewers remain responsible for checking context, confirming evidence, and determining whether an anomaly reflects a genuine compliance issue, a data problem, or an operational factor.",
   },
   {
     id: "transport",
     label: "TRANSPORT",
     short: "Mobility, public transport, roads and transportation systems.",
-    image: createSectorArt("TRANSPORT", { bg: "#eef3f4", panel: "#f7fbfb", accent: "#2f5e67", highlight: "#9bc8cc", line: "#c5dfe2" }, "FLOW"),
+    image: "https://images.unsplash.com/photo-1519003722824-194d4455a60c?auto=format&fit=crop&w=1200&q=82",
+    imageAlt: "Urban transport network and mobility infrastructure with data-driven traffic monitoring",
     whatIs: "Transport governance covers roads, public transportation, traffic management, mobility planning and transportation infrastructure.",
     detail: "Transport systems combine traffic data, movement patterns, public service demand, and infrastructure conditions. AI can help agencies interpret congestion and demand more quickly, but operational decisions still depend on real-world local context and human management.",
     signals: ["Traffic density", "Route demand", "Safety hotspots", "Maintenance needs"],
@@ -369,21 +342,14 @@ const resourceSectorContent = [
       "Delayed infrastructure projects",
       "Difficulty planning for changing travel patterns",
     ],
-    helps: [
-      "Analyze traffic patterns",
-      "Predict congestion",
-      "Support route planning",
-      "Identify accident-prone areas",
-      "Predict infrastructure maintenance needs",
-      "Analyze public transport demand",
-      "Support transportation planning",
-    ],
+    helpParagraph: "AI can support transport governance by analyzing traffic volumes, route patterns, transit usage, sensor feeds, road incidents, and historical movement data to help agencies understand where congestion or service gaps may be emerging. It can assist planners and operators by surfacing recurring bottlenecks, identifying time-of-day demand shifts, and highlighting maintenance or safety signals that merit review. When combined with geographic and operational information, these systems can support more targeted route planning, signal optimization, and infrastructure prioritization. Human oversight remains necessary because local conditions, events, and network disruptions may alter the interpretation of what the data shows. The strongest use of AI here is as a support tool for operational decision-making, not as a substitute for professional judgment.",
   },
   {
     id: "environment",
     label: "ENVIRONMENT",
     short: "Pollution, waste, natural resources and environmental monitoring.",
-    image: createSectorArt("ENVIRONMENT", { bg: "#edf4ee", panel: "#f8fbf8", accent: "#326c47", highlight: "#a6d7ab", line: "#c7ddc9" }, "PLANET"),
+    image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1200&q=82",
+    imageAlt: "Environmental monitoring in natural landscapes with data and sensor-based analysis",
     whatIs: "Environmental governance involves monitoring pollution, waste, water quality, natural resources, emissions and compliance with environmental standards.",
     detail: "Environmental monitoring often depends on sensors, satellite data, field reports, and long-term trend analysis. AI can help surface anomalies and priority areas, but environmental decisions must be grounded in real conditions and local evidence.",
     signals: ["Air quality", "Water quality", "Waste hotspots", "Land change"],
@@ -396,21 +362,14 @@ const resourceSectorContent = [
       "Difficulty monitoring large geographical areas",
       "Delayed detection of environmental problems",
     ],
-    helps: [
-      "Analyze environmental sensor data",
-      "Detect unusual pollution patterns",
-      "Support air and water quality monitoring",
-      "Analyze satellite and geographic information",
-      "Predict environmental risks",
-      "Identify areas requiring inspection",
-      "Support faster environmental decision-making",
-    ],
+    helpParagraph: "AI can support environmental governance by combining sensor readings, satellite imagery, geographic information, historical measurements, and field reports to identify patterns that may be difficult to detect manually at scale. It can help agencies monitor air and water quality, detect unusual pollution patterns, spot waste hotspots, and compare environmental conditions across locations over time. These tools can also support inspection prioritization, resource allocation, and longer-term risk analysis for climate, land, and ecosystem management. AI is most valuable when used as a decision-support system: environmental professionals still need to validate findings against local conditions, field evidence, regulatory requirements, and operational realities before making enforcement or intervention decisions.",
   },
   {
     id: "governance",
     label: "GENERAL GOVERNANCE",
     short: "Policy, public services, institutions, accountability and decision-making.",
-    image: createSectorArt("GOVERNANCE", { bg: "#eef4f5", panel: "#f7fafb", accent: "#355d68", highlight: "#a6ccd5", line: "#c8dfe5" }, "PUBLIC"),
+    image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=82",
+    imageAlt: "Public policy and governance professionals reviewing documents and institutional data",
     whatIs: "Governance is the process through which institutions make decisions, manage public resources, deliver services and remain accountable to citizens.",
     detail: "Governance work is shaped by policy, records, public programmes, institutional responsibilities, and evidence from many departments. AI can help make large bodies of information easier to understand, but transparency and accountability must remain central to every step.",
     signals: ["Policy review", "Service delivery", "Programme outcomes", "Institutional risk"],
@@ -423,15 +382,7 @@ const resourceSectorContent = [
       "Monitoring public programmes",
       "Turning data into useful decisions",
     ],
-    helps: [
-      "Summarize complex policies",
-      "Analyze government documents",
-      "Compare policies and frameworks",
-      "Identify patterns across large datasets",
-      "Support public service planning",
-      "Help monitor programmes",
-      "Provide decision-support insights",
-    ],
+    helpParagraph: "AI can support governance by organizing large volumes of policy documents, administrative records, programme reports, and public-service data into a more reviewable structure. It can help identify recurring patterns, compare actions across departments, surface anomalies in delivery, and make it easier for institutions to understand where information may be missing or where performance is diverging from expectations. In governance settings, AI is most useful when it supports evidence review, policy analysis, and operational monitoring while leaving final decisions in the hands of accountable institutions and professionals. Human oversight remains essential because governance depends not only on information quality but on context, legal authority, political priorities, public accountability, and the consequences of decisions taken.",
   },
 ];
 
@@ -508,9 +459,7 @@ const renderResourcePage = () => {
               <div class="resource-info-block resource-info-block-alt">
                 <span class="resource-block-label">04</span>
                 <h3>HOW CAN AI HELP?</h3>
-                <ul>
-                  ${selectedSector.helps.map((item) => `<li>${item}</li>`).join("")}
-                </ul>
+                <p>${selectedSector.helpParagraph}</p>
               </div>
 
               <div class="resource-info-block">
@@ -523,7 +472,7 @@ const renderResourcePage = () => {
 
               <div class="resource-sector-illustration" aria-label="${selectedSector.label} illustration">
                 <div class="resource-illustration-frame">
-                  <img class="resource-sector-image" src="${selectedSector.image}" alt="${selectedSector.label} illustration" />
+                  <img class="resource-sector-image" src="${selectedSector.image}" alt="${selectedSector.imageAlt || selectedSector.label + " illustration"}" loading="lazy" />
                 </div>
               </div>
             </div>
@@ -700,22 +649,22 @@ function shell() {
             <div class="meta-note">Governance, made legible</div>
           </div>
           <div class="about-why-grid">
-            <button class="about-why-card active" data-about-why="complexity" type="button">
-              <strong>Complexity</strong>
-              <p>Governance involves policies, documents, records, regulations, and information that can be difficult to process at scale.</p>
+            <button class="about-why-card active" data-about-why="accountability" type="button">
+              <strong>Accountability</strong>
+              <p>AI can help make complex governance processes more understandable and traceable, but technology alone cannot establish accountability.</p>
             </button>
-            <button class="about-why-card" data-about-why="clarity" type="button">
-              <strong>Clarity</strong>
-              <p>AI can help structure complex information and make important patterns easier to understand.</p>
+            <button class="about-why-card" data-about-why="politicalWill" type="button">
+              <strong>Political Will</strong>
+              <p>Technology becomes meaningful in governance only when institutions have the willingness and capacity to use it responsibly.</p>
             </button>
-            <button class="about-why-card" data-about-why="responsibility" type="button">
-              <strong>Responsibility</strong>
-              <p>Technology should support governance professionals rather than remove human judgement and accountability.</p>
+            <button class="about-why-card" data-about-why="outcome" type="button">
+              <strong>Outcome</strong>
+              <p>The value of AI in governance should ultimately be understood through its real-world outcomes and measurable results.</p>
             </button>
           </div>
           <div class="about-panel" id="about-why-panel">
-            <strong>COMPLEXITY</strong>
-            <p>Governance involves policies, documents, records, regulations, and information that can be difficult to process at scale.</p>
+            <strong>ACCOUNTABILITY</strong>
+            <p>AI can help make complex governance processes more understandable and traceable, but technology alone cannot establish accountability. NITIAI focuses on making the relationship between data, systems, decisions, and institutional responsibility clearer.</p>
           </div>
         </div>
 
@@ -924,7 +873,7 @@ root.addEventListener("click", (event: Event) => { const target = event.target a
   const finding = target.closest("[data-finding]") as HTMLElement; if (finding) openFinding(state.analysis.findings.find((f: any) => f.id === finding.dataset.finding));
   const review = target.closest("[data-review]") as HTMLElement; if (review) { reviewFinding(review.dataset.review as any, toast); window.setTimeout(() => { (document.getElementById("overlay") as HTMLElement).className = "overlay"; }, 180); }
   const principle = target.closest("[data-principle]") as HTMLElement; if (principle) update(() => { const title = principle.dataset.principle || ""; state.openPrinciples = state.openPrinciples.includes(title) ? state.openPrinciples.filter((p) => p !== title) : [...state.openPrinciples, title]; });
-  const aboutWhy = target.closest("[data-about-why]") as HTMLElement; if (aboutWhy) { const key = (aboutWhy.dataset.aboutWhy || "complexity") as keyof typeof aboutWhyCopy; document.querySelectorAll(".about-why-card").forEach((button) => button.classList.toggle("active", button === aboutWhy)); const panel = document.getElementById("about-why-panel"); if (panel) { const item = aboutWhyCopy[key]; panel.innerHTML = `<strong>${item.label}</strong><p>${item.body}</p>`; } }
+  const aboutWhy = target.closest("[data-about-why]") as HTMLElement; if (aboutWhy) { const key = (aboutWhy.dataset.aboutWhy || "accountability") as keyof typeof aboutWhyCopy; document.querySelectorAll(".about-why-card").forEach((button) => button.classList.toggle("active", button === aboutWhy)); const panel = document.getElementById("about-why-panel"); if (panel) { const item = aboutWhyCopy[key]; panel.innerHTML = `<strong>${item.label}</strong><p>${item.body}</p>`; } }
   const aboutPerspective = target.closest("[data-about-perspective]") as HTMLElement; if (aboutPerspective) { const key = (aboutPerspective.dataset.aboutPerspective || "can") as keyof typeof aboutPerspectiveCopy; document.querySelectorAll(".about-philosophy-card").forEach((button) => button.classList.toggle("active", button === aboutPerspective)); const panel = document.getElementById("about-perspective-panel"); if (panel) { const item = aboutPerspectiveCopy[key]; panel.innerHTML = `<strong>${item.label}</strong><p>${item.body}</p>`; } }
   const aboutPrinciple = target.closest("[data-about-principle]") as HTMLElement; if (aboutPrinciple) { const key = aboutPrinciple.dataset.aboutPrinciple || "Clarity"; document.querySelectorAll(".about-principle-card").forEach((button) => button.classList.toggle("active", button === aboutPrinciple)); const explain = document.getElementById("about-principle-copy"); if (explain) { explain.innerHTML = `<strong>${key}</strong><p>${aboutPrinciplesCopy[key as keyof typeof aboutPrinciplesCopy] || aboutPrinciplesCopy.Clarity}</p>`; } }
   const aboutPersona = target.closest("[data-about-persona]") as HTMLElement; if (aboutPersona) { const key = (aboutPersona.dataset.aboutPersona || "citizen") as keyof typeof aboutPersonasCopy; document.querySelectorAll(".about-persona-card").forEach((button) => button.classList.toggle("active", button === aboutPersona)); const detail = document.getElementById("about-persona-copy"); if (detail) { const item = aboutPersonasCopy[key]; detail.innerHTML = `<strong>${item.label}</strong><p>${item.body}</p>`; } }
