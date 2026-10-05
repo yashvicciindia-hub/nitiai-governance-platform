@@ -807,7 +807,9 @@ function shell() {
     </main>
     <footer><div class="container"><div class="footer-grid"><div><div class="footer-brand"><img class="footer-logo" src="/logo.png" alt="NitiAI Governance Platform" /></div><p class="footer-copy">AI Governance & Intelligence Platform. Built to make evidence, review, and accountability visible.</p></div><div><div class="footer-col-title">Navigation</div><div class="footer-links"><a href="#solutions">AI Solutions</a><a href="#policy">Policy & Ethics</a></div></div><div><div class="footer-col-title">Reference</div><div class="footer-links"><a href="#resources">Resources</a><a href="#about">About</a><a href="#policy">Responsible AI</a></div></div><div><div class="footer-col-title">Commitments</div><div class="footer-links"><a href="#about">Privacy</a><a href="#policy">Human oversight</a><a href="#about">Accessibility</a></div></div></div><div class="footer-bottom"><span>© 2026 NITIAI / illustrative product environment</span><span>DATA → INTELLIGENCE → EVIDENCE → OVERSIGHT → GOVERNANCE</span></div></div></footer>
     <div class="overlay" id="overlay"></div><div class="toast-stack" id="toastStack"></div><button class="chat-launcher" data-action="toggle-chat">${icon("chat")} Governance AI</button><div class="chat-panel" id="chatPanel"></div>
+    <a class="nitiai-app-download" href="/NitiAI.apk" download="NitiAI.apk" aria-label="Download NITIAI Android App" id="nitiaiAppDownloadCta"><span class="nitiai-app-download__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2"/><circle cx="12" cy="17" r="1"/><path d="M9 2v1h6V2"/></svg></span><span class="nitiai-app-download__label">Download App</span></a>
   </div>`;
+
   toastStack = document.getElementById("toastStack") as HTMLElement;
 }
 
