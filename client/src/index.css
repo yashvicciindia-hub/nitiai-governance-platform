@@ -1068,73 +1068,52 @@ footer { padding:28px 0; background:var(--ink); color:#dbe6e5; }.footer-grid { d
 @keyframes flowReveal { from { opacity: 0; transform: translateX(-8px); } to { opacity: 1; transform: translateX(0); } }
 @keyframes systemScan { 0%, 15% { transform: translateY(-140%); opacity: 0; } 28% { opacity: 1; } 72% { opacity: .7; } 100% { transform: translateY(560%); opacity: 0; } }
 
-/* ============================================================
-   NITIAI APP DOWNLOAD CTA — Floating global widget
-   Scoped with .nitiai-app-download prefix to avoid style leaks.
-   Positioned above the Governance AI chat launcher.
-   ============================================================ */
-
+/* Global download action sits above the Governance AI launcher. */
 .nitiai-app-download {
   position: fixed;
-  right: 20px;
-  bottom: 72px; /* sits above chat-launcher (bottom:20px + ~42px height + 10px gap) */
-  z-index: 48;  /* below chat-panel(70) & overlay(80), above regular content */
+  right: calc(22px + env(safe-area-inset-right));
+  bottom: calc(20px + env(safe-area-inset-bottom) + 42px + 12px);
+  z-index: 49;
   display: inline-flex;
   align-items: center;
-  justify-content: flex-end;
-  gap: 0;
-  height: 44px;
-  max-width: 44px;
-  overflow: hidden;
-  color: #fff;
-  background: var(--ink);
-  border: 1px solid #2f5870;
-  box-shadow: 0 10px 28px rgba(16, 40, 63, .22), 0 2px 8px rgba(16, 40, 63, .12);
+  justify-content: center;
+  gap: 9px;
+  min-height: 42px;
+  padding: 0 14px;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  box-shadow: var(--shadow-soft);
   cursor: pointer;
-  text-decoration: none;
   font-family: var(--sans);
   font-size: 12px;
   font-weight: 700;
   white-space: nowrap;
-  transition:
-    max-width 250ms var(--ease),
-    background 180ms ease,
-    box-shadow 220ms ease,
-    transform 180ms ease;
-  will-change: max-width, transform;
+  transition: background 180ms ease, border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
 }
 
-.nitiai-app-download:hover,
-.nitiai-app-download:focus-visible {
-  max-width: 200px;
-  background: var(--ink-2);
-  box-shadow: 0 14px 36px rgba(16, 40, 63, .28), 0 4px 12px rgba(16, 40, 63, .16);
-  transform: translateY(-2px);
-  outline: none;
+.nitiai-app-download:hover {
+  background: #f6faf9;
+  border-color: var(--teal);
+  box-shadow: 0 8px 22px rgba(16, 40, 63, .1);
+  transform: translateY(-1px);
 }
 
 .nitiai-app-download:active {
-  transform: translateY(0) scale(.97);
-}
-
-/* Focus ring for keyboard users */
-.nitiai-app-download:focus-visible {
-  outline: 3px solid rgba(43, 111, 138, .45);
-  outline-offset: 2px;
+  transform: translateY(0) scale(.98);
 }
 
 .nitiai-app-download__icon {
   display: grid;
   place-items: center;
   flex-shrink: 0;
-  width: 44px;
-  height: 44px;
-  color: #fff;
+  color: var(--teal);
 }
 
 .nitiai-app-download__icon svg {
-  width: 18px;
-  height: 18px;
+  display: block;
+  width: 17px;
+  height: 17px;
   stroke: currentColor;
   stroke-width: 1.7;
   stroke-linecap: square;
@@ -1145,76 +1124,25 @@ footer { padding:28px 0; background:var(--ink); color:#dbe6e5; }.footer-grid { d
 .nitiai-app-download__label {
   display: inline-flex;
   align-items: center;
-  gap: 0;
-  padding: 0 14px 0 0;
-  opacity: 0;
-  max-width: 0;
-  overflow: hidden;
-  pointer-events: none;
-  transition:
-    opacity 200ms ease 50ms,
-    max-width 250ms var(--ease);
-  color: #fff;
-  font-family: var(--sans);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: .01em;
 }
 
-.nitiai-app-download:hover .nitiai-app-download__label,
-.nitiai-app-download:focus-visible .nitiai-app-download__label {
-  opacity: 1;
-  max-width: 160px;
-  pointer-events: auto;
+.chat-panel.open ~ .nitiai-app-download {
+  visibility: hidden;
 }
 
-/* Thin teal accent line on the left edge — matches NITIAI toast/chat style */
-.nitiai-app-download::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 3px;
-  background: var(--teal);
-  opacity: .85;
-}
-
-/* Mobile: always compact, bigger touch target */
 @media (max-width: 760px) {
+  .chat-launcher {
+    right: calc(14px + env(safe-area-inset-right));
+    bottom: calc(14px + env(safe-area-inset-bottom));
+  }
+
+  .chat-panel {
+    right: calc(14px + env(safe-area-inset-right));
+    bottom: calc(66px + env(safe-area-inset-bottom));
+  }
+
   .nitiai-app-download {
-    right: 16px;
-    bottom: 68px;
-    width: 48px;
-    height: 48px;
-    max-width: 48px;
-  }
-
-  .nitiai-app-download:hover,
-  .nitiai-app-download:focus-visible {
-    max-width: 48px; /* stay compact on touch devices */
-    transform: none;
-  }
-
-  .nitiai-app-download__label {
-    display: none;
-  }
-
-  .nitiai-app-download__icon {
-    width: 48px;
-    height: 48px;
-  }
-
-  .nitiai-app-download__icon svg {
-    width: 20px;
-    height: 20px;
+    right: calc(14px + env(safe-area-inset-right));
+    bottom: calc(14px + env(safe-area-inset-bottom) + 42px + 10px);
   }
 }
-
-@media (max-width: 480px) {
-  .nitiai-app-download {
-    right: 14px;
-    bottom: 70px;
-  }
-}
-
