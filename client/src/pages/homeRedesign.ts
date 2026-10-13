@@ -19,14 +19,65 @@ const ecosystem = [
 ] as const;
 
 export const landscape = [
-  ["AGRICULTURE", "Technology, land, and public resources.", "https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=1200&q=80"],
-  ["HEALTHCARE", "Systems designed around access and care.", "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1200&q=80"],
-  ["EDUCATION", "Learning, opportunity, and public investment.", "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1200&q=80"],
-  ["PUBLIC SAFETY", "Information, coordination, and human judgment.", "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=1200&q=80"],
-  ["URBAN GOVERNANCE", "Infrastructure that shapes everyday movement.", "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=1200&q=80"],
-  ["ENVIRONMENT", "Stewardship informed by evidence and context.", "https://images.unsplash.com/photo-1473448912268-2022ce9509d8?auto=format&fit=crop&w=1200&q=80"],
-  ["CITIZEN SERVICES", "The point where institutions meet people.", "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1200&q=80"],
+  {
+    title: "AGRICULTURE",
+    copy: "Technology, land, and public resources.",
+    image: "agriculture",
+    alt: "Indian farmer harvesting healthy rice crops in a green field",
+    objectPosition: "50% 50%",
+  },
+  {
+    title: "HEALTHCARE",
+    copy: "Systems designed around access and care.",
+    image: "healthcare",
+    alt: "Doctor speaking with a patient in a hospital bed",
+    objectPosition: "50% 50%",
+  },
+  {
+    title: "EDUCATION",
+    copy: "Learning, opportunity, and public investment.",
+    image: "education",
+    alt: "Teacher leading a lesson with students in a classroom",
+    objectPosition: "50% 45%",
+  },
+  {
+    title: "PUBLIC SAFETY",
+    copy: "Information, coordination, and human judgment.",
+    image: "public-safety",
+    alt: "Firefighters in protective gear conducting a controlled training exercise",
+    objectPosition: "65% 50%",
+  },
+  {
+    title: "URBAN GOVERNANCE",
+    copy: "Infrastructure that shapes everyday movement.",
+    image: "urban-governance",
+    alt: "Aerial view of a densely built Indian city with roads and high-rise buildings",
+    objectPosition: "50% 55%",
+  },
+  {
+    title: "ENVIRONMENT",
+    copy: "Stewardship informed by evidence and context.",
+    image: "environment",
+    alt: "Sunlight filtering through a lush forest of mature trees",
+    objectPosition: "50% 50%",
+  },
+  {
+    title: "CITIZEN SERVICES",
+    copy: "The point where institutions meet people.",
+    image: "citizen-services",
+    alt: "Public service professionals collaborating in a modern office",
+    objectPosition: "50% 45%",
+  },
 ] as const;
+
+export function landscapeImageUrl(image: string, placement: "card" | "detail", width: number) {
+  return `/images/government-landscape/${image}-${placement}-${width}.webp`;
+}
+
+export function landscapeImageSrcSet(image: string, placement: "card" | "detail") {
+  const widths = placement === "card" ? [480, 800] : [640, 1100];
+  return widths.map((width) => `${landscapeImageUrl(image, placement, width)} ${width}w`).join(", ");
+}
 
 const process = [
   ["DATA", "Information enters with context, provenance, and limits."],
@@ -50,7 +101,7 @@ export function homeRedesignMarkup() {
   return `<section class="home-redesign home-only" data-home-section id="home-redesign">
     <section class="home-hero"><div class="container home-hero-grid"><div class="home-hero-copy"><div class="home-label">NITIAI / AI IN GOVERNANCE</div><h1>Governance<br/><span>through AI</span><br/></h1><p class="home-hero-lede">Exploring how artificial intelligence can help us understand policy, public systems, and the future of governance.</p><p class="home-hero-body">NITIAI is an interactive platform exploring the relationship between artificial intelligence and governance - from public-sector applications and policy understanding to responsible AI and public safety.</p><p class="home-hero-subheading">Accountability, political will, and outcome.</p><div class="home-hero-actions"><button class="btn btn-primary" data-home-scroll="home-platform">Explore NITIAI <span>-></span></button><button class="btn btn-secondary" data-home-scroll="home-explore">About the platform <span>-></span></button></div><div class="home-hero-meta"><span>AI / GOVERNANCE / PEOPLE</span><span>BRIEF 09.24</span></div></div><div class="home-hero-media" data-home-parallax><img src="${images[0]}" alt="Governance team reviewing public systems"/><div class="home-media-overlay"></div><div class="home-media-lines"><i></i><i></i><i></i></div><div class="home-media-label home-media-label-policy">POLICY</div><div class="home-media-label home-media-label-data">DATA</div><div class="home-media-label home-media-label-ai">AI</div><div class="home-media-label home-media-label-people">PEOPLE</div><div class="home-media-caption"><span>FIELD NOTE / 01</span><strong>Public systems are made of people, decisions, and information.</strong></div></div></div></section>
     <section class="home-section home-platform" id="home-platform"><div class="container"><div class="home-section-label">01 / THE PLATFORM</div><div class="home-split"><h2>Understanding governance<br/><em>in an age of AI.</em></h2><div class="home-split-copy"><p class="home-statement">AI is changing how information is processed, how public systems operate, and how people interact with institutions.</p><span class="home-growing-line"></span><p>NITIAI brings together perspectives on AI and governance through interactive experiences covering public-sector applications, policy, responsible AI, and emerging areas such as public safety.</p></div></div></div></section>
-    <section class="home-section home-landscape"><div class="container"><div class="home-section-label">03 / GOVERNMENT LANDSCAPE</div><div class="home-section-heading"><h2>Where governance<br/><em>meets everyday life.</em></h2><p>Public systems become real in the places, services, and infrastructures people rely on every day.</p></div><div class="home-landscape-rail">${landscape.map(([title, copy, image], index) => `<button class="home-landscape-item ${index === 0 ? "active" : ""}" data-home-landscape="${index}"><img src="${image}" alt="${title.toLowerCase()} editorial view" loading="lazy" data-home-landscape-image="${index}"/><span class="home-landscape-shade"></span><div><small>0${index + 1}</small><strong>${title}</strong><p>${copy}</p><i>-></i></div></button>`).join("")}</div></div></section>
+    <section class="home-section home-landscape"><div class="container"><div class="home-section-label">03 / GOVERNMENT LANDSCAPE</div><div class="home-section-heading"><h2>Where governance<br/><em>meets everyday life.</em></h2><p>Public systems become real in the places, services, and infrastructures people rely on every day.</p></div><div class="home-landscape-rail">${landscape.map(({ title, copy, image, alt, objectPosition }, index) => `<button class="home-landscape-item ${index === 0 ? "active" : ""}" data-home-landscape="${index}"><img src="${landscapeImageUrl(image, "card", 800)}" srcset="${landscapeImageSrcSet(image, "card")}" sizes="(max-width: 650px) 50vw, (max-width: 1000px) 25vw, 14vw" alt="${alt}" loading="lazy" decoding="async" style="object-position:${objectPosition}" data-home-landscape-image="${index}"/><span class="home-landscape-shade"></span><div><small>0${index + 1}</small><strong>${title}</strong><p>${copy}</p><i>-></i></div></button>`).join("")}</div></div></section>
     <section class="home-section home-process"><div class="container"><div class="home-section-label">04 / AI + GOVERNANCE</div><div class="home-section-heading"><h2>From information<br/><em>to insight.</em></h2><p>A responsible process keeps the movement from data to public outcome visible.</p></div><div class="home-process-track" id="homeProcessTrack">${process.map(([title, copy], index) => `<button class="home-process-step ${index === 0 ? "active" : ""}" data-home-process="${index}"><span>0${index + 1}</span><strong>${title}</strong><i>${index < process.length - 1 ? "->" : ""}</i><small>${copy}</small></button>`).join("")}</div><div class="home-process-detail" id="homeProcessDetail"><span>ACTIVE STAGE / DATA</span><p>${process[0][1]}</p></div></div></section>
     <section class="home-section home-visual"><div class="container"><div class="home-section-label">05 / GOVERNANCE LANDSCAPE</div><div class="home-visual-grid"><div><h2>A changing<br/><em>landscape.</em></h2><p>These themes are connected areas of exploration, not official statistics. Hover a theme to see its place in the wider system.</p><span class="home-illustrative">ILLUSTRATIVE VISUALIZATION</span></div><div class="home-theme-field" id="homeThemeField">${themes.map((theme, index) => `<button class="home-theme home-theme-${index}" data-home-theme="${index}"><i></i>${theme}</button>`).join("")}<div class="home-theme-core">NITIAI<br/><small>AI + GOVERNANCE</small></div></div></div></div></section>
     <section class="home-oversight"><div class="container"><div class="home-section-label">06 / HUMAN OVERSIGHT</div><h2>AI can accelerate information.<br/><span>People remain responsible for decisions.</span></h2><div class="home-oversight-sequence">${["DATA", "AI ASSISTANCE", "INSIGHT", "HUMAN REVIEW", "ACCOUNTABLE ACTION"].map((item, index) => `<div class="home-oversight-step"><strong>${item}</strong><i>${index < 4 ? "↓" : ""}</i></div>`).join("")}</div></div></section>
